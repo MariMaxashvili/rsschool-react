@@ -17,8 +17,10 @@ export class App extends React.Component<object, AppState> {
     };
   }
   async getPokemon() {
-    this.setState({ loading: true, error: null });
-
+    const { pokemon } = this.state;
+    const trimmed = pokemon.trim();
+    localStorage.setItem("pokemon", trimmed);
+    this.setState({ pokemon: trimmed, loading: true, error: null });
     try {
       const { pokemon } = this.state;
 
@@ -54,11 +56,7 @@ export class App extends React.Component<object, AppState> {
       this.getPokemon();
     });
   }
-  componentDidUpdate(_: object, prevState: Readonly<AppState>): void {
-    if (this.state.pokemon !== prevState.pokemon) {
-      localStorage.setItem("pokemon", this.state.pokemon);
-    }
-  }
+
   render() {
     if (this.state.throwError) {
       throw new Error("Test error!");
