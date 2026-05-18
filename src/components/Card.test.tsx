@@ -3,10 +3,15 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Card } from "./Card";
 import { mockPokemon } from "../test-utils/mocks";
+import { MemoryRouter } from "react-router-dom";
 
 describe("Card", () => {
   beforeEach(() => {
-    render(<Card pokemon={mockPokemon} />);
+    render(
+      <MemoryRouter>
+        <Card pokemon={mockPokemon} />
+      </MemoryRouter>,
+    );
   });
   it("renders pokemon name", () => {
     expect(screen.getByText("bulbasaur")).toBeInTheDocument();

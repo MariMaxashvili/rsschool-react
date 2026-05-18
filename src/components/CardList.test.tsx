@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { CardList } from "./CardList";
 import { mockPokemonList } from "../test-utils/mocks";
+import { MemoryRouter } from "react-router-dom";
 describe("CardList", () => {
   it("renders loading message when loading is true", () => {
     render(<CardList results={[]} loading={true} error={null} />);
@@ -16,7 +17,11 @@ describe("CardList", () => {
   });
 
   it("renders correct amount of cards", () => {
-    render(<CardList results={mockPokemonList} loading={false} error={null} />);
+    render(
+      <MemoryRouter>
+        <CardList results={mockPokemonList} loading={false} error={null} />
+      </MemoryRouter>,
+    );
     expect(screen.getByText("bulbasaur")).toBeInTheDocument();
     expect(screen.getByText("charmander")).toBeInTheDocument();
   });

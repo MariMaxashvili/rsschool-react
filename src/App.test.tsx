@@ -5,6 +5,16 @@ import userEvent from "@testing-library/user-event";
 import { mockPokemon } from "./test-utils/mocks";
 import { App } from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { MemoryRouter } from "react-router-dom";
+
+const renderApp = () => {
+  return render(
+    <MemoryRouter initialEntries={["/?page=1"]}>
+      <App />
+    </MemoryRouter>,
+  );
+};
+
 const mockAPIError = () => {
   vi.spyOn(window, "fetch").mockResolvedValueOnce({
     ok: false,
@@ -43,7 +53,7 @@ afterEach(() => {
 
 describe("App", () => {
   it("renders search input and button", () => {
-    render(<App />);
+    renderApp();
     expect(
       screen.getByPlaceholderText("Search for pokemon..."),
     ).toBeInTheDocument();
@@ -51,7 +61,7 @@ describe("App", () => {
   });
 
   it("fetches and displays pokemon on mount", async () => {
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByText("bulbasaur")).toBeInTheDocument();
     });
@@ -60,7 +70,7 @@ describe("App", () => {
   it("error API response", async () => {
     vi.restoreAllMocks();
     mockAPIError();
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     });
@@ -72,7 +82,7 @@ describe("App", () => {
       ok: false,
       json: async () => ({}),
     } as Response);
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByText(/pokemon not found/i)).toBeInTheDocument();
     });
@@ -81,14 +91,14 @@ describe("App", () => {
     vi.restoreAllMocks();
     mockSingleFetch();
     localStorage.setItem("pokemon", "pikachu");
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByDisplayValue("pikachu")).toBeInTheDocument();
     });
   });
 
   it("writes and updates localStorage after search", async () => {
-    render(<App />);
+    renderApp();
     const user = userEvent.setup();
     const input = screen.getByPlaceholderText("Search for pokemon...");
     const button = screen.getByRole("button", { name: "Search" });
@@ -105,7 +115,7 @@ describe("App", () => {
   it("handles network failure", async () => {
     vi.restoreAllMocks();
     vi.spyOn(window, "fetch").mockRejectedValueOnce(new Error("Network error"));
-    render(<App />);
+    renderApp();
     await waitFor(() => {
       expect(screen.getByText(/network error/i)).toBeInTheDocument();
     });
@@ -113,7 +123,9 @@ describe("App", () => {
   it("throws error when Trigger Error button is clicked", async () => {
     render(
       <ErrorBoundary>
-        <App />
+        <MemoryRouter initialEntries={["/?page=1"]}>
+          <App />
+        </MemoryRouter>
       </ErrorBoundary>,
     );
     const user = userEvent.setup();

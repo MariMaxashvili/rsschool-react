@@ -5,7 +5,7 @@ import { ErrorBoundary } from "./ErrorBoundary";
 import userEvent from "@testing-library/user-event";
 import { CardList } from "./CardList";
 import { mockPokemonList } from "../test-utils/mocks";
-
+import { MemoryRouter } from "react-router-dom";
 const ThrowError = () => {
   throw new Error("Test error!");
 };
@@ -21,7 +21,9 @@ describe("ErrorBoundary", () => {
   it("renders children normally when there is no error", () => {
     render(
       <ErrorBoundary>
-        <CardList results={mockPokemonList} loading={false} error={null} />
+        <MemoryRouter>
+          <CardList results={mockPokemonList} loading={false} error={null} />
+        </MemoryRouter>
       </ErrorBoundary>,
     );
     expect(screen.getByText("bulbasaur")).toBeInTheDocument();

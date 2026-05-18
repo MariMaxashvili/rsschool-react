@@ -1,12 +1,42 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import { App } from "./App.tsx";
-import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { App } from "./App";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { PokemonDetailsPanel } from "./components/PokemonDetailsPanel";
+import { About } from "./components/About";
+import { NotFound } from "./components/NotFound";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    ),
+    children: [
+      {
+        path: "pokemon/:id",
+        element: <PokemonDetailsPanel />,
+      },
+    ],
+  },
+  {
+    path: "/about",
+    element: (
+      <ErrorBoundary>
+        <About />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+]);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <RouterProvider router={router} />
   </StrictMode>,
 );
