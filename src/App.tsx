@@ -35,6 +35,9 @@ const App = () => {
         <Link to={ROUTES.ABOUT} className="link">
           Go to About Page &rarr;
         </Link>
+        <button className="theme-toggle" onClick={toggleTheme}>
+          {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+        </button>
       </header>
       <Input
         pokemon={pokemon}
@@ -73,6 +76,7 @@ const App = () => {
       <button className="error-btn" onClick={() => setThrowError(true)}>
         Trigger Error
       </button>
+      <Flyout />
     </div>
   );
 };

@@ -1,5 +1,7 @@
 export interface PokemonDetail {
+  id: number;
   name: string;
+  base_experience: number;
   types: { type: { name: string } }[];
   abilities: { ability: { name: string } }[];
 }
