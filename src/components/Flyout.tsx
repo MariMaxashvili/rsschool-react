@@ -3,7 +3,7 @@ import { usePokemonStore } from "../store/usePokemonStore";
 const Flyout = () => {
   const { selectedItems, unselectAll } = usePokemonStore();
 
-  if (selectedItems.length === 0) return null; // hidden when nothing selected ✓
+  if (selectedItems.length === 0) return null;
 
   const handleDownload = () => {
     const header = "name,types,abilities,base_experience,details_url";
