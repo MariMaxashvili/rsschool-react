@@ -1,5 +1,5 @@
-import { Card } from "./Card";
-import type { CardListProps } from "../types";
+import { Card } from "../Card/Card";
+import type { CardListProps } from "../../types";
 
 const CardList = ({ results, loading, error }: CardListProps) => {
   return (

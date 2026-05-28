@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { NotFound } from "./NotFound";
+import { NotFound } from "../NotFound/NotFound";
 
 describe("NotFound Component", () => {
   it("renders 404 status and return navigation link", () => {

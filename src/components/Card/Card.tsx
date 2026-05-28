@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import type { CardProps } from "../types";
+import type { CardProps } from "../../types";
 
 const Card = ({ pokemon }: CardProps) => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mockPokemon } from "./test-utils/mocks";
 import { App } from "./App";
-import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { MemoryRouter } from "react-router-dom";
 
 const renderApp = () => {

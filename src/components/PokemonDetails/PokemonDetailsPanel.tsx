@@ -1,40 +1,13 @@
-import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import type { PokemonDetail } from "../types";
-import "../App.css";
+import "../../App.css";
+import { usePokemonDetails } from "../../hooks/usePokemonDetails";
 
 export const PokemonDetailsPanel = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { detailData, loading, error } = usePokemonDetails(id);
 
-  const [detailData, setDetailData] = useState<PokemonDetail | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchDetails = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        const response = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${id.toLowerCase()}`,
-        );
-        if (!response.ok) throw new Error("Failed to load details.");
-        const data = await response.json();
-        setDetailData(data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [id]);
   const handleClose = () => {
     const page = searchParams.get("page") || "1";
     navigate(`/?page=${page}`);

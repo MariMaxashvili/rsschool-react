@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Card } from "./Card";
-import { mockPokemon } from "../test-utils/mocks";
+import { mockPokemon } from "../../test-utils/mocks";
 import { MemoryRouter } from "react-router-dom";
 
 describe("Card", () => {

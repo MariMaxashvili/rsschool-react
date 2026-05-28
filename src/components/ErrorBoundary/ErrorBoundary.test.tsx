@@ -3,8 +3,8 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ErrorBoundary } from "./ErrorBoundary";
 import userEvent from "@testing-library/user-event";
-import { CardList } from "./CardList";
-import { mockPokemonList } from "../test-utils/mocks";
+import { CardList } from "../CardList/CardList";
+import { mockPokemonList } from "../../test-utils/mocks";
 import { MemoryRouter } from "react-router-dom";
 const ThrowError = () => {
   throw new Error("Test error!");

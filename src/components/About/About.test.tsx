@@ -19,6 +19,9 @@ describe("About Component", () => {
       name: /RS School React Course/i,
     });
     expect(courseLink).toBeInTheDocument();
-    expect(courseLink).toHaveAttribute("href", "https://rs.school/react/");
+    expect(courseLink).toHaveAttribute(
+      "href",
+      "https://rs.school/courses/reactjs",
+    );
   });
 });
