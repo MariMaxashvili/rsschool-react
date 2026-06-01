@@ -1,0 +1,24 @@
+import { useState } from "react";
+
+export type LocalStorageKey = "pokemon";
+
+const useLocalStorage = ({
+  key,
+  initialValue,
+}: {
+  key: LocalStorageKey;
+  initialValue: string;
+}) => {
+  const [storedValue, setStoredValue] = useState(() => {
+    return localStorage.getItem(key) || initialValue;
+  });
+
+  const setValue = (value: string) => {
+    setStoredValue(value);
+    localStorage.setItem(key, value);
+  };
+
+  return [storedValue, setValue] as const;
+};
+
+export { useLocalStorage };
