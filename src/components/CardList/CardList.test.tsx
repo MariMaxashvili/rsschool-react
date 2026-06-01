@@ -10,8 +10,10 @@ describe("CardList", () => {
     usePokemonStore.setState({ selectedItems: [] });
   });
   it("renders loading message when loading is true", () => {
-    render(<CardList results={[]} loading={true} error={null} />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    const { container } = render(
+      <CardList results={[]} loading={true} error={null} />,
+    );
+    expect(container.querySelector(".spinner")).toBeInTheDocument();
   });
   it("shows error when it is provided", () => {
     render(

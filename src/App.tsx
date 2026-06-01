@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import { CardList } from "./components/CardList/CardList";
 import { Input } from "./components/Input/Input";
 import { useLocalStorage } from "./hooks/useLocalStorage";
@@ -9,6 +8,8 @@ import { usePokemonList } from "./hooks/usePokemonList";
 import { ROUTES } from "./constants";
 import { useTheme } from "./context/theme/useTheme";
 import { Flyout } from "./components/Flyout/Flyout";
+import { useQueryClient } from "@tanstack/react-query";
+import "./App.css";
 const App = () => {
   const [pokemon, setPokemon] = useLocalStorage({
     key: "pokemon",
@@ -18,8 +19,16 @@ const App = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageParam = searchParams.get("page");
   const page = pageParam ? Math.max(1, parseInt(pageParam, 10)) : 1;
-  const { results, loading, error, totalPages } = usePokemonList(pokemon, page);
+  const { results, loading, error, totalPages, refetch } = usePokemonList(
+    pokemon,
+    page,
+  );
   const { theme, toggleTheme } = useTheme();
+  const queryClient = useQueryClient();
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ["pokemon"] });
+    refetch();
+  };
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setSearchParams({ page: newPage.toString() });
@@ -46,7 +55,9 @@ const App = () => {
         onChange={handleInputChange}
         onSearch={() => setSearchParams({ page: "1" })}
       />
-
+      <button className="refresh-btn" onClick={handleRefresh}>
+        🔄 Refresh
+      </button>
       <div className="main-layout-container">
         <div className="master-panel">
           <CardList results={results} loading={loading} error={error} />
