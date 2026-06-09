@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { Card } from "./Card";
 import { mockPokemon } from "../../test-utils/mocks";
 import { MemoryRouter } from "react-router-dom";
-import { usePokemonStore } from "../store/usePokemonStore";
+import { usePokemonStore } from "../../store/usePokemonStore";
 import userEvent from "@testing-library/user-event";
 describe("Card", () => {
   beforeEach(() => {

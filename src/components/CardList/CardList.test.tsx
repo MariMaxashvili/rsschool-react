@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { CardList } from "../CardList/CardList";
 import { mockPokemonList } from "../../test-utils/mocks";
 import { MemoryRouter } from "react-router-dom";
-import { usePokemonStore } from "../store/usePokemonStore";
+import { usePokemonStore } from "../../store/usePokemonStore";
 describe("CardList", () => {
   beforeEach(() => {
     usePokemonStore.setState({ selectedItems: [] });

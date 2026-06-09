@@ -4,7 +4,7 @@ import type { PokemonDetail } from "../types";
 interface PokemonStore {
   selectedItems: PokemonDetail[];
   selectItem: (pokemon: PokemonDetail) => void;
-  unselectItem: (name: string) => void;
+  unselectItem: (id: number) => void;
   unselectAll: () => void;
 }
 
@@ -16,9 +16,9 @@ export const usePokemonStore = create<PokemonStore>((set) => ({
       selectedItems: [...state.selectedItems, pokemon],
     })),
 
-  unselectItem: (name) =>
+  unselectItem: (id) =>
     set((state) => ({
-      selectedItems: state.selectedItems.filter((p) => p.name !== name),
+      selectedItems: state.selectedItems.filter((p) => p.id !== id),
     })),
 
   unselectAll: () => set({ selectedItems: [] }),

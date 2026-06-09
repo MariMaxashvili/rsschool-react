@@ -7,6 +7,8 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { usePokemonList } from "./hooks/usePokemonList";
 import { ROUTES } from "./constants";
+import { useTheme } from "./context/theme/useTheme";
+import { Flyout } from "./components/Flyout/Flyout";
 const App = () => {
   const [pokemon, setPokemon] = useLocalStorage({
     key: "pokemon",
@@ -17,7 +19,7 @@ const App = () => {
   const pageParam = searchParams.get("page");
   const page = pageParam ? Math.max(1, parseInt(pageParam, 10)) : 1;
   const { results, loading, error, totalPages } = usePokemonList(pokemon, page);
-
+  const { theme, toggleTheme } = useTheme();
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setSearchParams({ page: newPage.toString() });

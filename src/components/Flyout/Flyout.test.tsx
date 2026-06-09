@@ -3,8 +3,8 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Flyout } from "./Flyout";
-import { usePokemonStore } from "../store/usePokemonStore";
-import { mockPokemon } from "../test-utils/mocks";
+import { usePokemonStore } from "../../store/usePokemonStore";
+import { mockPokemon } from "../../test-utils/mocks";
 
 const renderFlyout = () => render(<Flyout />);
 

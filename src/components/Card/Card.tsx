@@ -1,13 +1,13 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import type { CardProps } from "../types";
-import { usePokemonStore } from "../store/usePokemonStore";
+import type { CardProps } from "../../types";
+import { usePokemonStore } from "../../store/usePokemonStore";
 const Card = ({ pokemon }: CardProps) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const currentPage = searchParams.get("page") || "1";
 
   const { selectedItems, selectItem, unselectItem } = usePokemonStore();
-  const isSelected = selectedItems.some((p) => p.name === pokemon.name);
+  const isSelected = selectedItems.some((p) => p.id === pokemon.id);
   const handleClick = () => {
     navigate(`/pokemon/${pokemon.name}?page=${currentPage}`);
   };
@@ -17,7 +17,7 @@ const Card = ({ pokemon }: CardProps) => {
     if (e.target.checked) {
       selectItem(pokemon);
     } else {
-      unselectItem(pokemon.name);
+      unselectItem(pokemon.id);
     }
   };
   return (

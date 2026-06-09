@@ -1,10 +1,7 @@
-import { usePokemonStore } from "../store/usePokemonStore";
+import { usePokemonStore } from "../../store/usePokemonStore";
 
-const Flyout = () => {
-  const { selectedItems, unselectAll } = usePokemonStore();
-
-  if (selectedItems.length === 0) return null;
-
+export const useHandleDownload = () => {
+  const selectedItems = usePokemonStore((state) => state.selectedItems);
   const handleDownload = () => {
     const header = "name,types,abilities,base_experience,details_url";
     const rows = selectedItems.map((p) => {
@@ -22,18 +19,5 @@ const Flyout = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
-
-  return (
-    <div className="flyout">
-      <span>{selectedItems.length} item(s) selected</span>
-      <button className="flyout-unselect" onClick={unselectAll}>
-        Unselect all
-      </button>
-      <button className="flyout-download" onClick={handleDownload}>
-        Download
-      </button>
-    </div>
-  );
+  return { handleDownload };
 };
-
-export { Flyout };
