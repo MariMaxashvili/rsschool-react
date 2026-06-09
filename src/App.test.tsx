@@ -1,17 +1,20 @@
 import "@testing-library/jest-dom/vitest";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mockPokemon } from "./test-utils/mocks";
 import { App } from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { MemoryRouter } from "react-router-dom";
-
+import { ThemeProvider } from "./context/ThemeContext";
+import { usePokemonStore } from "./store/usePokemonStore";
 const renderApp = () => {
   return render(
-    <MemoryRouter initialEntries={["/?page=1"]}>
-      <App />
-    </MemoryRouter>,
+    <ThemeProvider>
+      <MemoryRouter initialEntries={["/?page=1"]}>
+        <App />
+      </MemoryRouter>
+    </ThemeProvider>,
   );
 };
 
@@ -45,6 +48,7 @@ const mockSingleFetch = () => {
 };
 beforeEach(() => {
   localStorage.clear();
+  usePokemonStore.setState({ selectedItems: [] });
   mockListFetch();
 });
 afterEach(() => {
@@ -122,15 +126,32 @@ describe("App", () => {
   });
   it("throws error when Trigger Error button is clicked", async () => {
     render(
-      <ErrorBoundary>
-        <MemoryRouter initialEntries={["/?page=1"]}>
-          <App />
-        </MemoryRouter>
-      </ErrorBoundary>,
+      <ThemeProvider>
+        <ErrorBoundary>
+          <MemoryRouter initialEntries={["/?page=1"]}>
+            <App />
+          </MemoryRouter>
+        </ErrorBoundary>
+      </ThemeProvider>,
     );
     const user = userEvent.setup();
     const button = screen.getByRole("button", { name: "Trigger Error" });
     await user.click(button);
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+  });
+  it("renders theme toggle button", () => {
+    renderApp();
+    expect(
+      screen.getByRole("button", { name: /dark mode|light mode/i }),
+    ).toBeInTheDocument();
+  });
+  it("toggles theme when theme button is clicked", async () => {
+    renderApp();
+    const user = userEvent.setup();
+    const themeBtn = screen.getByRole("button", { name: /dark mode/i });
+    await user.click(themeBtn);
+    expect(
+      screen.getByRole("button", { name: /light mode/i }),
+    ).toBeInTheDocument();
   });
 });

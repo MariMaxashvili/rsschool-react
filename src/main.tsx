@@ -2,10 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { App } from "./App";
-import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
-import { PokemonDetailsPanel } from "./components/PokemonDetails/PokemonDetailsPanel";
-import { About } from "./components/About/About";
-import { NotFound } from "./components/NotFound/NotFound";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { PokemonDetailsPanel } from "./components/PokemonDetailsPanel";
+import { About } from "./components/About";
+import { NotFound } from "./components/NotFound";
+import { ThemeProvider } from "./context/ThemeContext";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +38,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>,
 );
