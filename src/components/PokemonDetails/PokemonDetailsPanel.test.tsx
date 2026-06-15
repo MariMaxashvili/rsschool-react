@@ -26,7 +26,7 @@ describe("PokemonDetailsPanel Component", () => {
 
     renderWithRoute();
 
-    expect(screen.getByText("Loading details...")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
   it("fetches and displays pokemon details successfully", async () => {
@@ -59,7 +59,9 @@ describe("PokemonDetailsPanel Component", () => {
 
     await waitFor(
       () => {
-        expect(screen.getByText("Failed to load details.")).toBeInTheDocument();
+        expect(
+          screen.getByText(/failed to load pokémon details/i),
+        ).toBeInTheDocument();
       },
       { timeout: 1500 },
     );

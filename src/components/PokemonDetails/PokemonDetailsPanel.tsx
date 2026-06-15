@@ -13,12 +13,14 @@ export const PokemonDetailsPanel = () => {
     navigate(`/?page=${page}`);
   };
 
-  if (loading) return <div className="details-loading">Loading details...</div>;
+  if (loading)
+    return <div className="spinner" role="status" aria-label="Loading..." />;
 
   if (error)
     return (
       <div className="details-error">
-        {error} <button onClick={handleClose}>Close</button>
+        <p>Failed to load Pokémon details. Please try again.</p>
+        <button onClick={handleClose}>Close</button>
       </div>
     );
   if (!detailData) return null;

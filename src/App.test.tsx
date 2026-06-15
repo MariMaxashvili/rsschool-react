@@ -6,18 +6,31 @@ import { mockPokemon } from "./test-utils/mocks";
 import { App } from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { MemoryRouter } from "react-router-dom";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/theme/ThemeContext";
 import { usePokemonStore } from "./store/usePokemonStore";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false, // don't retry on error in tests
+        staleTime: 0,
+      },
+    },
+  });
 const renderApp = () => {
+  const queryClient = createTestQueryClient();
   return render(
-    <ThemeProvider>
-      <MemoryRouter initialEntries={["/?page=1"]}>
-        <App />
-      </MemoryRouter>
-    </ThemeProvider>,
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={["/?page=1"]}>
+          <App />
+        </MemoryRouter>
+      </ThemeProvider>
+    </QueryClientProvider>,
   );
 };
-
 const mockAPIError = () => {
   vi.spyOn(window, "fetch").mockResolvedValueOnce({
     ok: false,
@@ -76,7 +89,7 @@ describe("App", () => {
     mockAPIError();
     renderApp();
     await waitFor(() => {
-      expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+      expect(screen.getByText(/failed to load/i)).toBeInTheDocument();
     });
   });
   it("shows error when specific pokemon is not found", async () => {
@@ -88,7 +101,7 @@ describe("App", () => {
     } as Response);
     renderApp();
     await waitFor(() => {
-      expect(screen.getByText(/pokemon not found/i)).toBeInTheDocument();
+      expect(screen.getByText(/failed to load/i)).toBeInTheDocument();
     });
   });
   it("reads from localStorage on mount", async () => {
@@ -121,22 +134,28 @@ describe("App", () => {
     vi.spyOn(window, "fetch").mockRejectedValueOnce(new Error("Network error"));
     renderApp();
     await waitFor(() => {
-      expect(screen.getByText(/network error/i)).toBeInTheDocument();
+      expect(screen.getByText(/failed to load/i)).toBeInTheDocument();
     });
   });
   it("throws error when Trigger Error button is clicked", async () => {
     render(
-      <ThemeProvider>
-        <ErrorBoundary>
-          <MemoryRouter initialEntries={["/?page=1"]}>
-            <App />
-          </MemoryRouter>
-        </ErrorBoundary>
-      </ThemeProvider>,
+      <QueryClientProvider client={createTestQueryClient()}>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <MemoryRouter initialEntries={["/?page=1"]}>
+              <App />
+            </MemoryRouter>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </QueryClientProvider>,
     );
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Trigger Error" }),
+      ).toBeInTheDocument();
+    });
     const user = userEvent.setup();
-    const button = screen.getByRole("button", { name: "Trigger Error" });
-    await user.click(button);
+    await user.click(screen.getByRole("button", { name: "Trigger Error" }));
     expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
   it("renders theme toggle button", () => {
@@ -153,5 +172,47 @@ describe("App", () => {
     expect(
       screen.getByRole("button", { name: /light mode/i }),
     ).toBeInTheDocument();
+  });
+  it("shows loading state while fetching", async () => {
+    vi.restoreAllMocks();
+    vi.spyOn(window, "fetch").mockImplementation(() => new Promise(() => {}));
+    renderApp();
+    await waitFor(() => {
+      expect(screen.getByRole("status")).toBeTruthy();
+    });
+  });
+  it("caches data and does not refetch on re-render", async () => {
+    const fetchSpy = vi.spyOn(window, "fetch");
+    const queryClient = createTestQueryClient();
+    const renderWithClient = () =>
+      render(
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <MemoryRouter initialEntries={["/?page=1"]}>
+              <App />
+            </MemoryRouter>
+          </ThemeProvider>
+        </QueryClientProvider>,
+      );
+
+    const { unmount } = renderWithClient();
+    await waitFor(() => {
+      expect(screen.getByText("bulbasaur")).toBeInTheDocument();
+    });
+    const callCount = fetchSpy.mock.calls.length;
+    unmount();
+    renderWithClient();
+    await waitFor(() => {
+      expect(screen.getByText("bulbasaur")).toBeInTheDocument();
+    });
+    expect(fetchSpy.mock.calls.length).toBe(callCount);
+  });
+  it("shows error state when fetch fails", async () => {
+    vi.restoreAllMocks();
+    vi.spyOn(window, "fetch").mockRejectedValueOnce(new Error("Network error"));
+    renderApp();
+    await waitFor(() => {
+      expect(screen.getByText(/failed to load/i)).toBeInTheDocument();
+    });
   });
 });

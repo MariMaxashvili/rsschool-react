@@ -3,3 +3,6 @@ export const ROUTES = {
   HOME: "/",
   ABOUT: "/about",
 };
+export const QUERY_KEYS = {
+  pokemon: "pokemon",
+} as const;

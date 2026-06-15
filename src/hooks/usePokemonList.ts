@@ -1,25 +1,28 @@
-import { useFetch } from "./useFetch";
+import { useQuery } from "@tanstack/react-query";
 import { PokemonService } from "../services/pokemon";
+import { QUERY_KEYS } from "../constants";
 
 export const usePokemonList = (pokemon: string, page: number) => {
   const trimmed = pokemon.trim();
 
-  const { data, loading, error } = useFetch(
-    async (signal) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: [QUERY_KEYS.pokemon, trimmed, page],
+    queryFn: () => {
       if (trimmed) {
-        const detail = await PokemonService.getDetails(trimmed, signal);
-        return { results: [detail], totalPages: 1 };
+        return PokemonService.getDetails(trimmed).then((detail) => ({
+          results: [detail],
+          totalPages: 1,
+        }));
       }
-
-      return PokemonService.getList(page, signal);
+      return PokemonService.getList(page);
     },
-    [trimmed, page],
-  );
+  });
 
   return {
     results: data?.results ?? [],
     totalPages: data?.totalPages ?? 1,
-    loading,
-    error,
+    loading: isLoading,
+    error: error ? "Failed to load Pokémon. Please try again." : null,
+    refetch,
   };
 };

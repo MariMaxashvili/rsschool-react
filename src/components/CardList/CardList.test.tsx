@@ -11,7 +11,7 @@ describe("CardList", () => {
   });
   it("renders loading message when loading is true", () => {
     render(<CardList results={[]} loading={true} error={null} />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toBeInTheDocument();
   });
   it("shows error when it is provided", () => {
     render(
