@@ -103,12 +103,6 @@ body {
   background: #b71c1c;
 }
 
-.results-section {
-  background: var(--section-bg);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px var(--shadow);
-  padding: 24px;
-}
 
 .card {
   display: flex;
@@ -298,22 +292,6 @@ body {
 .theme-toggle:hover {
   border-color: #970300;
   color: #970300;
-}
-
-.spinner {
-  display: flex;
-  justify-content: center;
-  padding: 40px;
-}
-
-.spinner::after {
-  content: "";
-  width: 32px;
-  height: 32px;
-  border: 4px solid var(--border-light);
-  border-top-color: #970300;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {

@@ -13,7 +13,8 @@ export const PokemonDetailsPanel = () => {
     navigate(`/?page=${page}`);
   };
 
-  if (loading) return <div className="spinner" />;
+  if (loading)
+    return <div className="spinner" role="status" aria-label="Loading..." />;
 
   if (error)
     return (

@@ -1,0 +1,22 @@
+.results-section {
+  background: var(--section-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow);
+  padding: 24px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.spinner::after {
+  content: "";
+  width: 32px;
+  height: 32px;
+  border: 4px solid var(--border-light);
+  border-top-color: #970300;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}

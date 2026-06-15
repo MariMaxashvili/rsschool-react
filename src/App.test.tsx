@@ -6,7 +6,7 @@ import { mockPokemon } from "./test-utils/mocks";
 import { App } from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { MemoryRouter } from "react-router-dom";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/theme/ThemeContext";
 import { usePokemonStore } from "./store/usePokemonStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -176,11 +176,9 @@ describe("App", () => {
   it("shows loading state while fetching", async () => {
     vi.restoreAllMocks();
     vi.spyOn(window, "fetch").mockImplementation(() => new Promise(() => {}));
-    const { container } = renderApp();
+    renderApp();
     await waitFor(() => {
-      expect(
-        container.querySelector(".spinner") || screen.queryByText(/loading/i),
-      ).toBeTruthy();
+      expect(screen.getByRole("status")).toBeTruthy();
     });
   });
   it("caches data and does not refetch on re-render", async () => {

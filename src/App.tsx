@@ -5,7 +5,7 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Outlet, useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { usePokemonList } from "./hooks/usePokemonList";
-import { ROUTES } from "./constants";
+import { QUERY_KEYS, ROUTES } from "./constants";
 import { useTheme } from "./context/theme/useTheme";
 import { Flyout } from "./components/Flyout/Flyout";
 import { useQueryClient } from "@tanstack/react-query";
@@ -26,7 +26,7 @@ const App = () => {
   const { theme, toggleTheme } = useTheme();
   const queryClient = useQueryClient();
   const handleRefresh = () => {
-    queryClient.invalidateQueries({ queryKey: ["pokemon"] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.pokemon] });
     refetch();
   };
   const handlePageChange = (newPage: number) => {

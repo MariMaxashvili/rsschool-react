@@ -7,7 +7,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { PokemonDetailsPanel } from "./components/PokemonDetails/PokemonDetailsPanel";
 import { About } from "./components/About/About";
 import { NotFound } from "./components/NotFound/NotFound";
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "./context//theme/ThemeContext";
 import "./index.css";
 
 const queryClient = new QueryClient({

@@ -26,7 +26,7 @@ describe("PokemonDetailsPanel Component", () => {
 
     renderWithRoute();
 
-    expect(document.querySelector(".spinner")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
   it("fetches and displays pokemon details successfully", async () => {
