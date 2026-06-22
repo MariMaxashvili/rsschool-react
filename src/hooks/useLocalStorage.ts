@@ -10,12 +10,17 @@ const useLocalStorage = ({
   initialValue: string;
 }) => {
   const [storedValue, setStoredValue] = useState(() => {
-    return localStorage.getItem(key) || initialValue;
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(key) || initialValue;
+    }
+    return initialValue;
   });
 
   const setValue = (value: string) => {
     setStoredValue(value);
-    localStorage.setItem(key, value);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, value);
+    }
   };
 
   return [storedValue, setValue] as const;

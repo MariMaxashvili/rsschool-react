@@ -1,3 +1,4 @@
+"use client";
 import { usePokemonStore } from "../../store/usePokemonStore";
 import { useHandleDownload } from "./useHandleDownload";
 import "./Flyout.styles.css";

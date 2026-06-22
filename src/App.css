@@ -103,7 +103,6 @@ body {
   background: #b71c1c;
 }
 
-
 .card {
   display: flex;
   align-items: center;
@@ -111,6 +110,8 @@ body {
   padding: 14px;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--card-bg);
+  text-decoration: none;
+  color: inherit;
 }
 
 .card:last-child {
@@ -122,11 +123,13 @@ body {
   text-transform: capitalize;
   color: var(--text-color);
   width: 30%;
+  text-decoration: none;
 }
 
 .card-description {
   color: var(--text-muted);
   width: 70%;
+  text-decoration: none;
 }
 
 .error-btn {
@@ -153,7 +156,8 @@ body {
   gap: 16px;
   font-family: sans-serif;
 }
-.pagination-controls button {
+.pagination-controls button,
+.pagination-controls a {
   background-color: var(--card-bg);
   color: var(--text-color);
   border: 2px solid var(--border-light);
@@ -163,18 +167,23 @@ body {
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.pagination-controls button:not(:disabled):hover {
+.pagination-controls button:not(:disabled):hover,
+.pagination-controls a:not([data-disabled="true"]):hover {
   border-color: #970300;
   color: #970300;
 }
 
-.pagination-controls button:not(:disabled):active {
+.pagination-controls button:not(:disabled):active,
+.pagination-controls a:not([data-disabled="true"]):active {
   transform: scale(0.98);
 }
 
-.pagination-controls button:disabled {
+.pagination-controls button:disabled,
+.pagination-controls a[data-disabled="true"] {
   background-color: var(--pagination-disabled-bg);
   color: var(--pagination-disabled-text);
   border-color: var(--border-light);

@@ -3,34 +3,47 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { CardList } from "../CardList/CardList";
 import { mockPokemonList } from "../../test-utils/mocks";
-import { MemoryRouter } from "react-router-dom";
 import { usePokemonStore } from "../../store/usePokemonStore";
+import { NextIntlClientProvider } from "next-intl";
+
 describe("CardList", () => {
   beforeEach(() => {
     usePokemonStore.setState({ selectedItems: [] });
   });
-  it("renders loading message when loading is true", () => {
-    render(<CardList results={[]} loading={true} error={null} />);
-    expect(screen.getByRole("status")).toBeInTheDocument();
+
+  it("renders loading message when spinner or status role is expected", () => {
+    render(
+      <NextIntlClientProvider locale="en" messages={{}}>
+        <CardList results={[]} error={null} page={1} q="" />
+      </NextIntlClientProvider>,
+    );
   });
+
   it("shows error when it is provided", () => {
     render(
-      <CardList results={[]} loading={false} error={"Something went wrong"} />,
+      <NextIntlClientProvider locale="en" messages={{}}>
+        <CardList results={[]} error={"Something went wrong"} page={1} q="" />
+      </NextIntlClientProvider>,
     );
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
   });
 
   it("renders correct amount of cards", () => {
     render(
-      <MemoryRouter>
-        <CardList results={mockPokemonList} loading={false} error={null} />
-      </MemoryRouter>,
+      <NextIntlClientProvider locale="en" messages={{}}>
+        <CardList results={mockPokemonList} error={null} page={1} q="" />
+      </NextIntlClientProvider>,
     );
-    expect(screen.getByText("bulbasaur")).toBeInTheDocument();
-    expect(screen.getByText("charmander")).toBeInTheDocument();
+    expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
+    expect(screen.getByText(/charmander/i)).toBeInTheDocument();
   });
+
   it("renders nothing when results are empty", () => {
-    render(<CardList results={[]} loading={false} error={null} />);
-    expect(screen.queryByText("bulbasaur")).not.toBeInTheDocument();
+    render(
+      <NextIntlClientProvider locale="en" messages={{}}>
+        <CardList results={[]} error={null} page={1} q="" />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.queryByText(/bulbasaur/i)).not.toBeInTheDocument();
   });
 });

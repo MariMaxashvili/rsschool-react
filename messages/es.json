@@ -1,0 +1,39 @@
+{
+  "Layout": {
+    "aboutLink": "Ir a la página Acerca de →"
+  },
+  "HomePage": {
+    "title": "Pokemon",
+    "searchPlaceholder": "Buscar pokemon...",
+    "searchButton": "Buscar",
+    "refresh": "🔄 Actualizar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page}",
+    "triggerError": "Provocar error",
+    "loadError": "No se pudo cargar Pokémon. Inténtalo de nuevo.",
+    "detailsLoadError": "No se pudieron cargar los detalles de Pokémon. Inténtalo de nuevo.",
+    "close": "Cerrar"
+  },
+  "AboutPage": {
+    "backToDashboard": "Volver al Panel",
+    "title": "Sobre esta Aplicación",
+    "description": "Esta es una aplicación de Pokémon interactiva y responsiva, diseñada para visualizar y gestionar entradas de elementos de manera fluida utilizando la PokéAPI.",
+    "authorTitle": "Información del Autor",
+    "developerLabel": "Desarrollador:",
+    "projectGoalLabel": "Objetivo del Proyecto:",
+    "projectGoalText": "Implementar enrutamiento robusto de una sola página, persistencia de estado y restricciones de diseño.",
+    "courseCreditsTitle": "Créditos del Curso",
+    "builtAsPart": "Construido como parte de"
+  },
+  "Flyout": {
+    "itemsSelected": "{count, plural, =1 {# elemento seleccionado} other {# elementos seleccionados}}",
+    "unselectAll": "Deseleccionar todo",
+    "download": "Descargar"
+  },
+  "NotFoundPage": {
+    "title": "Página no encontrada",
+    "description": "¡Ups! La página que estás buscando no existe.",
+    "backHome": "Volver al Panel"
+  }
+}

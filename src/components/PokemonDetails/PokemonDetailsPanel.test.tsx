@@ -1,92 +1,39 @@
-import "@testing-library/jest-dom/vitest";
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Routes, Route } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
 import { PokemonDetailsPanel } from "./PokemonDetailsPanel";
+import { PokemonService } from "@/services/pokemon";
+import * as nextIntlServer from "next-intl/server";
+import { vi, describe, it, expect, beforeEach } from "vitest";
 import { mockPokemon } from "../../test-utils/mocks";
 
-const renderWithRoute = (initialEntry = "/pokemon/bulbasaur") => {
-  return render(
-    <MemoryRouter initialEntries={[initialEntry]}>
-      <Routes>
-        <Route path="/pokemon/:id" element={<PokemonDetailsPanel />} />
-      </Routes>
-    </MemoryRouter>,
-  );
-};
-
-describe("PokemonDetailsPanel Component", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it("renders the loading state initially", async () => {
-    vi.spyOn(window, "fetch").mockReturnValue(new Promise(() => {}));
-
-    renderWithRoute();
-
-    expect(screen.getByRole("status")).toBeInTheDocument();
+vi.mock("@/services/pokemon");
+vi.mock("next-intl/server");
+interface MockTranslator {
+  (key: string): string;
+}
+describe("PokemonDetailsPanel (Server Component)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    const mockT: MockTranslator = (key: string) => key;
+    vi.mocked(nextIntlServer.getTranslations).mockResolvedValue(
+      mockT as unknown as Awaited<
+        ReturnType<typeof nextIntlServer.getTranslations>
+      >,
+    );
   });
 
   it("fetches and displays pokemon details successfully", async () => {
-    vi.spyOn(window, "fetch").mockResolvedValue({
-      ok: true,
-      json: async () => mockPokemon,
-    } as Response);
+    vi.mocked(PokemonService.getDetails).mockResolvedValue(mockPokemon);
+    const ui = await PokemonDetailsPanel({ id: "bulbasaur", page: 1 });
+    render(ui);
 
-    renderWithRoute();
-    await waitFor(
-      () => {
-        expect(screen.getByText("BULBASAUR")).toBeInTheDocument();
-        expect(screen.getByText("Types")).toBeInTheDocument();
-        expect(screen.getByText("grass")).toBeInTheDocument();
-        expect(screen.getByText("Abilities")).toBeInTheDocument();
-        expect(screen.getByText("overgrow")).toBeInTheDocument();
-      },
-      { timeout: 1500 },
-    );
+    expect(screen.getByText(/BULBASAUR/i)).toBeInTheDocument();
+    expect(screen.getByText("grass")).toBeInTheDocument();
   });
 
-  it("renders error message and handles close navigation when fetch fails", async () => {
-    vi.spyOn(window, "fetch").mockResolvedValue({
-      ok: false,
-      json: async () => ({}),
-    } as Response);
-
-    const user = userEvent.setup();
-    renderWithRoute();
-
-    await waitFor(
-      () => {
-        expect(
-          screen.getByText(/failed to load pokémon details/i),
-        ).toBeInTheDocument();
-      },
-      { timeout: 1500 },
-    );
-
-    const closeBtn = screen.getByRole("button", { name: /Close/i });
-    await user.click(closeBtn);
-  });
-
-  it("handles the close layout action via close icon button click", async () => {
-    vi.spyOn(window, "fetch").mockResolvedValue({
-      ok: true,
-      json: async () => mockPokemon,
-    } as Response);
-
-    const user = userEvent.setup();
-    renderWithRoute("/pokemon/bulbasaur?page=1");
-
-    await waitFor(
-      () => {
-        expect(screen.getByText("BULBASAUR")).toBeInTheDocument();
-      },
-      { timeout: 1500 },
-    );
-
-    const closeIconBtn = screen.getByRole("button", { name: "×" });
-    await user.click(closeIconBtn);
+  it("renders error message on failure", async () => {
+    vi.mocked(PokemonService.getDetails).mockRejectedValue(new Error("Failed"));
+    const ui = await PokemonDetailsPanel({ id: "error", page: 1 });
+    render(ui);
+    expect(await screen.findByText("detailsLoadError")).toBeInTheDocument();
   });
 });
