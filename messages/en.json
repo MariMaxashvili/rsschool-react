@@ -1,0 +1,42 @@
+{
+  "Layout": {
+    "aboutLink": "Go to About Page →"
+  },
+  "HomePage": {
+    "title": "Pokemon",
+    "types": "Types",
+    "abilities": "Abilities",
+    "searchPlaceholder": "Search for pokemon...",
+    "searchButton": "Search",
+    "refresh": "🔄 Refresh",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page}",
+    "triggerError": "Trigger Error",
+    "loadError": "Failed to load Pokémon. Please try again.",
+    "detailsLoadError": "Failed to load Pokémon details. Please try again.",
+    "searchNotFound": "No Pokémon found matching your search.",
+    "close": "Close"
+  },
+  "AboutPage": {
+    "backToDashboard": "Back to Dashboard",
+    "title": "About This Application",
+    "description": "This is a responsive, reactive Pokémon dashboard designed to seamlessly view and manage item entries using the PokéAPI.",
+    "authorTitle": "Author Information",
+    "developerLabel": "Developer:",
+    "projectGoalLabel": "Project Goal:",
+    "projectGoalText": "Implementing robust single-page routing, state persistence, and layout constraints.",
+    "courseCreditsTitle": "Course Credits",
+    "builtAsPart": "Built as part of the"
+  },
+  "Flyout": {
+    "itemsSelected": "{count, plural, =1 {# item selected} other {# items selected}}",
+    "unselectAll": "Unselect all",
+    "download": "Download"
+  },
+  "NotFoundPage": {
+    "title": "Page Not Found",
+    "description": "Oops! The page you are looking for doesn't exist.",
+    "backHome": "Return to Dashboard"
+  }
+}

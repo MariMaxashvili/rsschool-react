@@ -3,17 +3,13 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Card } from "./Card";
 import { mockPokemon } from "../../test-utils/mocks";
-import { MemoryRouter } from "react-router-dom";
+
 import { usePokemonStore } from "../../store/usePokemonStore";
 import userEvent from "@testing-library/user-event";
 describe("Card", () => {
   beforeEach(() => {
     usePokemonStore.setState({ selectedItems: [] });
-    render(
-      <MemoryRouter>
-        <Card pokemon={mockPokemon} />
-      </MemoryRouter>,
-    );
+    render(<Card pokemon={mockPokemon} page={1} q="" />);
   });
   it("renders pokemon name", () => {
     expect(screen.getByText("bulbasaur")).toBeInTheDocument();

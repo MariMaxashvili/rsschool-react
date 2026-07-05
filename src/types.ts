@@ -7,17 +7,12 @@ export interface PokemonDetail {
 }
 export interface CardProps {
   pokemon: PokemonDetail;
+  page: number;
+  q?: string;
 }
 export interface CardListProps {
   results: PokemonDetail[];
-  loading: boolean;
   error: string | null;
-}
-
-export interface AppState {
-  pokemon: string;
-  results: PokemonDetail[];
-  loading: boolean;
-  error: string | null;
-  throwError: boolean;
+  page: number;
+  q?: string;
 }

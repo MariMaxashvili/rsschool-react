@@ -23,3 +23,8 @@ coverage/
 *.njsproj
 *.sln
 *.sw?
+.pnp
+.pnp.js
+.next
+out
+build
