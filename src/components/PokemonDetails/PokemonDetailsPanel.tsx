@@ -26,13 +26,13 @@ export async function PokemonDetailsPanel({ id, page, q }: Props) {
           </Link>
         </div>
         <div className="details-body">
-          <h3>Types</h3>
+          <h3>{t("types")}</h3>
           <ul className="details-list">
             {detail.types.map((type, i) => (
               <li key={i}>{type.type.name}</li>
             ))}
           </ul>
-          <h3>Abilities</h3>
+          <h3>{t("abilities")}</h3>
           <ul className="details-list">
             {detail.abilities.map((ability, i) => (
               <li key={i}>{ability.ability.name}</li>

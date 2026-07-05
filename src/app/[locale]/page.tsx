@@ -9,6 +9,7 @@ import { PokemonDetailsPanel } from "@/components/PokemonDetails/PokemonDetailsP
 import { Flyout } from "@/components/Flyout/Flyout";
 import type { PokemonDetail } from "@/types";
 import { notFound } from "next/navigation";
+
 export default async function HomePage({
   params,
   searchParams,
@@ -40,8 +41,12 @@ export default async function HomePage({
       results = data.results;
       totalPages = data.totalPages;
     }
-  } catch {
-    notFound();
+  } catch (err) {
+    if (q.trim()) {
+      error = t("searchNotFound");
+    } else {
+      notFound();
+    }
   }
 
   return (

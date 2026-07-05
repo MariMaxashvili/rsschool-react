@@ -4,6 +4,8 @@
   },
   "HomePage": {
     "title": "Pokemon",
+    "types": "Tipos",
+    "abilities": "Habilidades",
     "searchPlaceholder": "Buscar pokemon...",
     "searchButton": "Buscar",
     "refresh": "🔄 Actualizar",
@@ -13,6 +15,7 @@
     "triggerError": "Provocar error",
     "loadError": "No se pudo cargar Pokémon. Inténtalo de nuevo.",
     "detailsLoadError": "No se pudieron cargar los detalles de Pokémon. Inténtalo de nuevo.",
+    "searchNotFound": "No se encontró ningún Pokémon con esa búsqueda.",
     "close": "Cerrar"
   },
   "AboutPage": {
